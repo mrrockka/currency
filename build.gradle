@@ -1,5 +1,9 @@
 plugins {
     id 'java'
+    id 'idea'
+    id 'application'
+    alias(libs.plugins.springBootPlugin)
+    alias(libs.plugins.springDepManagementPlugin)
 }
 
 group = 'by.mrrockka'
@@ -9,11 +13,51 @@ repositories {
     mavenCentral()
 }
 
+defaultTasks "clean", "assemble"
+
+tasks.withType(JavaCompile).configureEach {
+    options.compilerArgs.addAll([
+            '--enable-preview',
+            '-Amapstruct.suppressGeneratorTimestamp=true',
+            '-Amapstruct.defaultComponentModel=spring',
+    ])
+    options.release.set(22)
+}
+
 dependencies {
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation libs.springBootWeb
+    implementation libs.springBootJdbc
+    implementation libs.postgresql
+    implementation libs.liquibase
+    implementation libs.hikariCP
+    implementation libs.jacksonDataformat
+    implementation libs.mapstructCore
+    implementation libs.lombokMapstructBinding
+
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
+    annotationProcessor libs.mapstructProcessor
+
+    testCompileOnly libs.lombok
+    testAnnotationProcessor libs.lombok
+    testAnnotationProcessor libs.mapstructProcessor
+
+    testImplementation libs.assertjCore
+    testImplementation libs.jupiter
+    testImplementation libs.mockitoCore
+    testImplementation libs.mockitoJupiter
+    testImplementation libs.springBootTest
 }
 
 test {
     useJUnitPlatform()
+}
+
+application {
+    mainClass = 'by.mrrockka.Application'
+}
+
+bootJar {
+    enabled = true
+    archiveBaseName = "exchange-currencies"
 }
