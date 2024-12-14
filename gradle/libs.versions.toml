@@ -14,6 +14,7 @@ jacksonDataformatVersion = "2.18.0"
 mapstructVersion = "1.6.2"
 lombokMapstructBindingVersion = "0.2.0"
 hikariCPVersion = "5.1.0"
+openApiVersion = "2.6.0"
 
 [plugins]
 springBootPlugin = { id = "org.springframework.boot", version.ref = "springBootVersion" }
@@ -22,6 +23,7 @@ springDepManagementPlugin = { id = "io.spring.dependency-management", version.re
 [libraries]
 springBootJdbc = { module = "org.springframework.boot:spring-boot-starter-jdbc" }
 springBootWeb = { module = "org.springframework.boot:spring-boot-starter-web" }
+openApi = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "openApiVersion" }
 postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresqlVersion" }
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombockVersion" }
 jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "jupiterVersion" }

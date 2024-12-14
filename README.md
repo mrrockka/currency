@@ -31,4 +31,8 @@
 1. `get a list of currencies used in the project` means that it is a list of previously added currencies by user
 2. On adding new currencies there should be a call to exchange rates provider to populate storage with rates
 3. On application start if there are no currencies stored in db there should be no prepopulation of rates (no currencies - no rates)
-4. When there are number of currencies stored every scheduled call to exchange provider should be performed for all the currencies to update them in db 
+4. When there are number of currencies stored every scheduled call to exchange provider should be performed for all the currencies to update them in db
+
+
+## Tech Notes:
+- Use http://localhost:8081/swagger-ui/index.html to reach the swagger docs
