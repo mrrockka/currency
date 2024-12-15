@@ -37,7 +37,7 @@ class CurrencyApiControllerTest {
   @Test
   void givenCurrenciesList_whenRequestToGetAll_shouldReturnAll() {
     final var currencies = List.of("AUD", "GBP", "EUR");
-    when(currencyService.getAllCurrencies()).thenReturn(currencies);
+    when(currencyService.getAllCurrencyCodes()).thenReturn(currencies);
     assertThat(currencyApiController.getAllCurrencies()
                  .getBody()).isEqualTo(currencies);
   }

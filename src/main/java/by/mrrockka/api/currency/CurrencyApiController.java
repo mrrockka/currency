@@ -25,7 +25,7 @@ public class CurrencyApiController implements CurrencyApi {
 
   @Override
   public ResponseEntity<List<String>> getAllCurrencies() {
-    return ResponseEntity.ok(currencyService.getAllCurrencies());
+    return ResponseEntity.ok(currencyService.getAllCurrencyCodes());
   }
 
   @Override
