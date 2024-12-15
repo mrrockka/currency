@@ -1,4 +1,4 @@
-package by.mrrockka.repo;
+package by.mrrockka.repo.currency;
 
 import by.mrrockka.config.PSQLExtension;
 import by.mrrockka.repository.currency.CurrencyEntity;

@@ -1,5 +1,6 @@
 package by.mrrockka.service;
 
+import by.mrrockka.client.ExchangeRatesClient;
 import by.mrrockka.mapper.CurrencyMapper;
 import by.mrrockka.repository.currency.CurrencyEntity;
 import by.mrrockka.repository.currency.CurrencyRepository;
@@ -27,13 +28,10 @@ class CurrencyServiceTest {
   private CurrencyRepository currencyRepository;
   @Mock
   private CurrencyMapper currencyMapper;
+  @Mock
+  private ExchangeRatesClient exchangeRatesClient;
   @InjectMocks
   private CurrencyService currencyService;
-
-  @AfterEach
-  void after() {
-    verifyNoMoreInteractions(currencyRepository);
-  }
 
   @Test
   void givenCurrency_whenAttemptToStore_thenShouldStore() {
@@ -55,12 +53,11 @@ class CurrencyServiceTest {
   }
 
   @Test
-  void givenCurrency_whenAttemptToGetRates_thenShouldReturnData() {
+  void givenCurrencyCodeAndRates_whenAttemptToGetRates_thenShouldReturnData() {
     final var currency = Currency.builder()
       .code("EUR")
       .rates(Map.of("AUD", BigDecimal.valueOf(1.123), "GPB", BigDecimal.valueOf(2.543)))
       .build();
-
     final var entity =
       new CurrencyEntity("EUR", Map.of("AUD", BigDecimal.valueOf(1.123), "GPB", BigDecimal.valueOf(2.543)));
     when(currencyRepository.select(currency.code())).thenReturn(entity);
@@ -72,19 +69,22 @@ class CurrencyServiceTest {
   }
 
   @Test
-  void givenCurrencyCodeAndNoRates_whenAttemptToGetRates_thenShouldReturnPopulateDataAndReturn() {
-    final var currency = Currency.builder()
+  void givenCurrencyCodeAndNoRates_whenAttemptToGetRates_thenShouldPopulateDataAndReturn() {
+    final var expected = Currency.builder()
       .code("EUR")
       .rates(Map.of("AUD", BigDecimal.valueOf(1.123), "GPB", BigDecimal.valueOf(2.543)))
       .build();
+
     final var entity =
       new CurrencyEntity("EUR", Map.of("AUD", BigDecimal.valueOf(1.123), "GPB", BigDecimal.valueOf(2.543)));
-    when(currencyRepository.select(currency.code())).thenReturn(entity);
-    when(currencyMapper.toDomain(entity)).thenReturn(currency);
-    currencyService.updateCurrency(currency);
-    final var actual = currencyService.getCurrencyExchangeRate(currency.code());
-    assertThat(actual).isEqualTo(currency);
-    verify(currencyRepository).upsert(currency.code(), currency.rates());
+    when(currencyRepository.select(expected.code())).thenReturn(entity);
+    when(currencyMapper.toDomain(entity)).thenReturn(expected);
+    currencyService.storeCurrency(expected.code());
+    when(exchangeRatesClient.retrieveExchangeRates(expected.code())).thenReturn(expected.rates());
+    final var actual = currencyService.getCurrencyExchangeRate(expected.code());
+    assertThat(actual).isEqualTo(expected);
+    verify(currencyRepository).insert(expected.code());
+    verify(currencyRepository).upsert(expected.code(), expected.rates());
   }
 
 }

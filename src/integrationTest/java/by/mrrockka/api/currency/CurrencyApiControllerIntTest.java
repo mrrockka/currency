@@ -1,4 +1,4 @@
-package by.mrrockka.api;
+package by.mrrockka.api.currency;
 
 import by.mrrockka.config.PSQLExtension;
 import by.mrrockka.service.currency.Currency;

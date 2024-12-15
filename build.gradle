@@ -79,6 +79,7 @@ testing {
                 implementation libs.springBootJdbc
                 implementation libs.testContainerJupiter
                 implementation libs.testContainerPostgresql
+                implementation libs.awaitility
 
                 compileOnly libs.lombok
                 annotationProcessor libs.lombok

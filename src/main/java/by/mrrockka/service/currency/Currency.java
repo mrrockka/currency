@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Optional;
 
-@Builder
+@Builder(toBuilder = true)
 public record Currency(@NonNull String code, Map<String, BigDecimal> rates) {
 
   public Optional<Map<String, BigDecimal>> optRates() {

@@ -1,11 +1,14 @@
 package by.mrrockka.service.currency;
 
+import by.mrrockka.client.ExchangeRatesClient;
 import by.mrrockka.mapper.CurrencyMapper;
 import by.mrrockka.repository.currency.CurrencyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +20,7 @@ public class CurrencyService {
 
   private final CurrencyRepository currencyRepository;
   private final CurrencyMapper currencyMapper;
+  private final ExchangeRatesClient exchangeRatesClient;
   private final Map<String, Currency> currencies = new HashMap<>();
 
   @Transactional
@@ -27,10 +31,15 @@ public class CurrencyService {
                     .build());
   }
 
-  @Transactional
+  @Transactional(propagation = Propagation.REQUIRED)
   public void updateCurrency(Currency currency) {
     currencyRepository.upsert(currency.code(), currency.rates());
     cacheCurrency(currency);
+  }
+
+  @Transactional
+  public void updateBatch(List<Currency> currencies) {
+    currencies.forEach(this::updateCurrency);
   }
 
   public List<String> getAllCurrencyCodes() {
@@ -46,9 +55,21 @@ public class CurrencyService {
 
   public Currency getCurrencyExchangeRate(String currencyCode) {
     return getCachedCurrency(currencyCode)
+      .map(currency -> currency.toBuilder()
+        .rates(currency.optRates()
+                 .orElse(retrieveAndStoreRates(currencyCode)))
+        .build())
+      .map(this::cacheCurrency)
       .orElse(cacheCurrency(currencyMapper.toDomain(currencyRepository.select(currencyCode))));
   }
 
+  private Map<String, BigDecimal> retrieveAndStoreRates(String currencyCode) {
+    final var rates = exchangeRatesClient.retrieveExchangeRates(currencyCode);
+    currencyRepository.upsert(currencyCode, rates);
+    return rates;
+  }
+
+  //  todo: move to cache provider or configure via framework
   private Optional<Currency> getCachedCurrency(String currencyCode) {
     return Optional.ofNullable(currencies.get(currencyCode));
   }
