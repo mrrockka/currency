@@ -27,9 +27,9 @@ tasks.withType(JavaCompile).configureEach {
 
 dependencies {
     implementation libs.springBootWeb
-//    implementation libs.springBootJdbc
-//    implementation libs.postgresql
-//    implementation libs.liquibase
+    implementation libs.springBootJdbc
+    implementation libs.postgresql
+    implementation libs.liquibase
     implementation libs.hikariCP
     implementation libs.jacksonDataformat
     implementation libs.mapstructCore
@@ -76,7 +76,9 @@ testing {
                 implementation libs.springBootWeb
                 implementation libs.assertjCore
                 implementation libs.springBootTest
-//                implementation libs.springBootJdbc
+                implementation libs.springBootJdbc
+                implementation libs.testContainerJupiter
+                implementation libs.testContainerPostgresql
 
                 compileOnly libs.lombok
                 annotationProcessor libs.lombok
@@ -88,8 +90,6 @@ testing {
     }
 }
 
-
-
 application {
     mainClass = 'by.mrrockka.Application'
 }
@@ -98,3 +98,5 @@ bootJar {
     enabled = true
     archiveBaseName = "exchange-currencies"
 }
+
+check.dependsOn integrationTest

@@ -1,2 +1,18 @@
 server:
   port: 8081
+
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    url: ${DB_URL:jdbc:postgresql://postgres:5432/currency?sslmode=disable}
+    driver-class-name: org.postgresql.Driver
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:root}
+    hikari:
+      connectionTimeout: 3000
+      idleTimeout: 3000
+      maxLifetime: 20000
+      maximumPoolSize: 10
+      minimumIdle: 1
+  liquibase:
+    enabled: true

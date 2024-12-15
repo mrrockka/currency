@@ -15,6 +15,7 @@ mapstructVersion = "1.6.2"
 lombokMapstructBindingVersion = "0.2.0"
 hikariCPVersion = "5.1.0"
 openApiVersion = "2.6.0"
+testContainerVersion = "1.20.1"
 
 [plugins]
 springBootPlugin = { id = "org.springframework.boot", version.ref = "springBootVersion" }
@@ -37,3 +38,5 @@ mapstructCore = { module = "org.mapstruct:mapstruct", version.ref = "mapstructVe
 mapstructProcessor = { module = "org.mapstruct:mapstruct-processor", version.ref = "mapstructVersion" }
 lombokMapstructBinding = { module = "org.projectlombok:lombok-mapstruct-binding", version.ref = "lombokMapstructBindingVersion" }
 hikariCP = { module = "com.zaxxer:HikariCP", version.ref = "hikariCPVersion" }
+testContainerPostgresql = { module = "org.testcontainers:postgresql", version.ref = "testContainerVersion" }
+testContainerJupiter = { module = "org.testcontainers:junit-jupiter", version.ref = "testContainerVersion" }

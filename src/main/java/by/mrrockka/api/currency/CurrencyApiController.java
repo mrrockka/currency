@@ -1,6 +1,6 @@
-package by.mrrockka.api;
+package by.mrrockka.api.currency;
 
-import by.mrrockka.service.CurrencyService;
+import by.mrrockka.service.currency.CurrencyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +30,6 @@ public class CurrencyApiController implements CurrencyApi {
 
   @Override
   public ResponseEntity<Map<String, BigDecimal>> getExchangeRates(String currencyCode) {
-    return ResponseEntity.ok(currencyService.getCurrencyExchangeRate(currencyCode));
+    return ResponseEntity.ok(currencyService.getCurrencyExchangeRate(currencyCode).rates());
   }
 }

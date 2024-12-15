@@ -1,4 +1,4 @@
-package by.mrrockka.api;
+package by.mrrockka.api.currency;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @Tag(name = "Currency", description = "currencies API")
-public interface CurrencyApi {
+interface CurrencyApi {
 
   @Operation(summary = "Add new currencies to process", description = "Add new currencies to process")
   @ApiResponses(value = {
