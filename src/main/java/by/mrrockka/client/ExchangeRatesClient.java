@@ -23,8 +23,8 @@ public class ExchangeRatesClient {
 
   public Map<String, BigDecimal> retrieveExchangeRates(String currency) {
     return Optional.ofNullable(
-        restTemplate.getForObject(STR."\{exchangeRatesProviderUrl}/v1/latest", ExchangeRatesResponse.class,
-                                  Map.of("access_key", apiKey, "base", currency))
+        restTemplate.getForObject(STR."\{exchangeRatesProviderUrl}/v1/latest?access_key=\{apiKey}&base=\{currency}",
+                                  ExchangeRatesResponse.class)
       )
       .map(ExchangeRatesResponse::rates)
       .orElseThrow(() -> new RuntimeException("Rate are nullable"));

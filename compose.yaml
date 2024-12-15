@@ -6,6 +6,8 @@ services:
       - 'DB_PASSWORD=currency'
       - 'DB_URL=jdbc:postgresql://postgres:5432/currency?sslmode=disable'
       - 'DB_USER=currencyuser'
+    ports:
+      - '8081:8081'
     depends_on:
       - postgres
   postgres:
