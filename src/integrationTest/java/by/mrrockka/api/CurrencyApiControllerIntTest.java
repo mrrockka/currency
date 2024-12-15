@@ -10,7 +10,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -38,7 +40,7 @@ public class CurrencyApiControllerIntTest {
   }
 
   @Test
-  void givenStoredCurrencies_whenRequestToGetAll_thenShouldReturnCurrencies() throws Exception {
+  void givenStoredCurrencies_whenRequestToGetAll_thenShouldReturnData() throws Exception {
     final var currencies = List.of("AUD", "GPB");
     when(currencyService.getAllCurrencies()).thenReturn(currencies);
 
@@ -46,5 +48,17 @@ public class CurrencyApiControllerIntTest {
       .andExpect(status().isOk())
       .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
       .andExpect(content().json(new ObjectMapper().writeValueAsString(currencies)));
+  }
+
+  @Test
+  void givenExchangeRates_whenRequestToGetRates_thenShouldReturnData() throws Exception {
+    final var currency = "EUR";
+    final var rates = Map.of("AUD", BigDecimal.valueOf(1.123), "GPB", BigDecimal.valueOf(2.543));
+    when(currencyService.getCurrencyExchangeRate(currency)).thenReturn(rates);
+
+    this.mockMvc.perform(get(STR."/currencies/\{currency}/rates"))
+      .andExpect(status().isOk())
+      .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+      .andExpect(content().json(new ObjectMapper().writeValueAsString(rates)));
   }
 }
