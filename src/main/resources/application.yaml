@@ -19,8 +19,8 @@ spring:
 
 client:
   exchangeRatesProvider:
-    url: https://api.exchangeratesapi.io
-    apiKey: 9e7889611334faf92d2ae1c2dcf57dc8
+    url: "https://api.exchangeratesapi.io"
+    apiKey: "9e7889611334faf92d2ae1c2dcf57dc8"
 
 scheduler:
   delay: 3600000

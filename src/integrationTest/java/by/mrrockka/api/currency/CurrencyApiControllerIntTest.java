@@ -1,6 +1,8 @@
 package by.mrrockka.api.currency;
 
+import by.mrrockka.client.ExchangeRatesClient;
 import by.mrrockka.config.PSQLExtension;
+import by.mrrockka.repository.currency.CurrencyRepository;
 import by.mrrockka.service.currency.Currency;
 import by.mrrockka.service.currency.CurrencyService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -30,6 +33,8 @@ public class CurrencyApiControllerIntTest {
   private MockMvc mockMvc;
   @Autowired
   private CurrencyService currencyService;
+  @MockBean
+  private ExchangeRatesClient exchangeRatesClient;
 
   @Test
   void givenCurrency_whenRequestToAdd_thenShouldReturnCreatedCode() throws Exception {
