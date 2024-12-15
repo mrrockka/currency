@@ -97,7 +97,7 @@ application {
 
 bootJar {
     enabled = true
-    archiveBaseName = "exchange-currencies"
+    archiveBaseName = "currency"
 }
 
 check.dependsOn integrationTest

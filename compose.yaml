@@ -1,0 +1,18 @@
+services:
+  currency:
+    build:
+      dockerfile: Dockerfile
+    environment:
+      - 'DB_PASSWORD=currency'
+      - 'DB_URL=jdbc:postgresql://postgres:5432/currency?sslmode=disable'
+      - 'DB_USER=currencyuser'
+    depends_on:
+      - postgres
+  postgres:
+    image: 'postgres:16.1'
+    ports:
+      - '5432:5432'
+    environment:
+      - 'POSTGRES_USER=currencyuser'
+      - 'POSTGRES_DB=currency'
+      - 'POSTGRES_PASSWORD=currency'
